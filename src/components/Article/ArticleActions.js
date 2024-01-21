@@ -1,23 +1,25 @@
 import { Link } from 'react-router-dom';
 import React from 'react';
 import agent from '../../agent';
-import { connect } from 'react-redux';
-import { DELETE_ARTICLE } from '../../constants/actionTypes';
+import { connect, useDispatch } from 'react-redux';
+// import { DELETE_ARTICLE } from '../../constants/actionTypes';
+import { deleteArticle } from '../../reducers/common';
 
-const mapDispatchToProps = dispatch => ({
-  onClickDelete: payload =>
-    dispatch({ type: DELETE_ARTICLE, payload })
-});
+// const mapDispatchToProps = dispatch => ({
+//   onClickDelete: payload =>
+//     dispatch({ type: DELETE_ARTICLE, payload })
+// });
+
 
 const ArticleActions = props => {
+  const dispatch = useDispatch();
   const article = props.article;
   const del = () => {
-    props.onClickDelete(agent.Articles.del(article.slug))
+    dispatch(deleteArticle(agent.Articles.del(article.slug)))
   };
   if (props.canModify) {
     return (
       <span>
-
         <Link
           to={`/editor/${article.slug}`}
           className="btn btn-outline-secondary btn-sm">
@@ -38,4 +40,6 @@ const ArticleActions = props => {
   );
 };
 
-export default connect(() => ({}), mapDispatchToProps)(ArticleActions);
+export default ArticleActions;
+
+// export default connect(() => ({}), mapDispatchToProps)(ArticleActions);

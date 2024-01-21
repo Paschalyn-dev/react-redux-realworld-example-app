@@ -1,8 +1,9 @@
 import ArticleList from '../ArticleList';
-import React from 'react';
+import React, { useDeferredValue } from 'react';
 import agent from '../../agent';
-import { connect } from 'react-redux';
-import { CHANGE_TAB } from '../../constants/actionTypes';
+import { connect, useDispatch, useSelector } from 'react-redux';
+// import { CHANGE_TAB } from '../../constants/actionTypes';
+import { changeTab } from '../../reducers/articleList';
 
 const YourFeedTab = props => {
   if (props.token) {
@@ -55,42 +56,50 @@ const TagFilterTab = props => {
   );
 };
 
-const mapStateToProps = state => ({
-  ...state.articleList,
-  tags: state.home.tags,
-  token: state.common.token
-});
+// const mapStateToProps = state => ({
+//   ...state.articleList,
+//   tags: state.home.tags,
+//   token: state.common.token
+// });
 
-const mapDispatchToProps = dispatch => ({
-  onTabClick: (tab, pager, payload) => dispatch({ type: CHANGE_TAB, tab, pager, payload })
-});
+// const mapDispatchToProps = dispatch => ({
+//   onTabClick: (tab, pager, payload) => dispatch({ type: CHANGE_TAB, tab, pager, payload })
+// });
 
-const MainView = props => {
-  return (
-    <div className="col-md-9">
-      <div className="feed-toggle">
-        <ul className="nav nav-pills outline-active">
 
+function MainView (){
+    const articleList = useSelector((state) => ({
+        ...state.articleList,
+        tags: state.home.tags,
+        token: state.common.token
+    }))
+    const dispatch = useDispatch();
+    return (
+        <div className="col-md-9">
+        <div className="feed-toggle">
+            <ul className="nav nav-pills outline-active">
+                
           <YourFeedTab
-            token={props.token}
-            tab={props.tab}
-            onTabClick={props.onTabClick} />
+            token={articleList.token}
+            tab={articleList.tab}
+            onTabClick={dispatch(changeTab())} />
 
-          <GlobalFeedTab tab={props.tab} onTabClick={props.onTabClick} />
+          <GlobalFeedTab tab={articleList.tab} onTabClick={dispatch(changeTab())} />
 
-          <TagFilterTab tag={props.tag} />
+          <TagFilterTab tag={articleList.tag} />
 
         </ul>
       </div>
 
       <ArticleList
-        pager={props.pager}
-        articles={props.articles}
-        loading={props.loading}
-        articlesCount={props.articlesCount}
-        currentPage={props.currentPage} />
+        pager={articleList.pager}
+        articles={articleList.articles}
+        loading={articleList.loading}
+        articlesCount={articleList.articlesCount}
+        currentPage={articleList.currentPage} />
     </div>
   );
 };
+export default MainView;
 
-export default connect(mapStateToProps, mapDispatchToProps)(MainView);
+// export default connect(mapStateToProps, mapDispatchToProps)(MainView);

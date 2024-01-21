@@ -2,50 +2,50 @@ import { Link } from 'react-router-dom';
 import ListErrors from './ListErrors';
 import React from 'react';
 import agent from '../agent';
-import { connect } from 'react-redux';
-import {
-  UPDATE_FIELD_AUTH,
-  REGISTER,
-  REGISTER_PAGE_UNLOADED
-} from '../constants/actionTypes';
+import { connect, useDispatch, useSelector } from 'react-redux';
+// import {
+//   UPDATE_FIELD_AUTH,
+//   REGISTER,
+//   REGISTER_PAGE_UNLOADED
+// } from '../constants/actionTypes';
+import { register, registerPageUnloaded, updateFieldAuth } from '../reducers/auth';
 
-const mapStateToProps = state => ({ ...state.auth });
+// const mapStateToProps = state => ({ ...state.auth });
 
-const mapDispatchToProps = dispatch => ({
-  onChangeEmail: value =>
-    dispatch({ type: UPDATE_FIELD_AUTH, key: 'email', value }),
-  onChangePassword: value =>
-    dispatch({ type: UPDATE_FIELD_AUTH, key: 'password', value }),
-  onChangeUsername: value =>
-    dispatch({ type: UPDATE_FIELD_AUTH, key: 'username', value }),
-  onSubmit: (username, email, password) => {
+// const mapDispatchToProps = dispatch => ({
+//   onChangeEmail: value =>
+//     dispatch({ type: UPDATE_FIELD_AUTH, key: 'email', value }),
+//   onChangePassword: value =>
+//     dispatch({ type: UPDATE_FIELD_AUTH, key: 'password', value }),
+//   onChangeUsername: value =>
+//     dispatch({ type: UPDATE_FIELD_AUTH, key: 'username', value }),
+//   onSubmit: (username, email, password) => {
+//     const payload = agent.Auth.register(username, email, password);
+//     dispatch({ type: REGISTER, payload })
+//   },
+//   onUnload: () =>
+//     dispatch({ type: REGISTER_PAGE_UNLOADED })
+// });
+
+export default function Register(){
+  const auth = useSelector((state) => ({ ...state.auth }));
+  const dispatch = useDispatch();
+  const changeEmail = ev => dispatch(updateFieldAuth(ev.target.value));
+  const changePassword = ev => dispatch(updateFieldAuth(ev.target.value));
+  const changeUsername = ev => dispatch(updateFieldAuth(ev.target.value));
+  const submitForm = (username, email, password) => ev => {
+    ev.preventDefault();
     const payload = agent.Auth.register(username, email, password);
-    dispatch({ type: REGISTER, payload })
-  },
-  onUnload: () =>
-    dispatch({ type: REGISTER_PAGE_UNLOADED })
-});
-
-class Register extends React.Component {
-  constructor() {
-    super();
-    this.changeEmail = ev => this.props.onChangeEmail(ev.target.value);
-    this.changePassword = ev => this.props.onChangePassword(ev.target.value);
-    this.changeUsername = ev => this.props.onChangeUsername(ev.target.value);
-    this.submitForm = (username, email, password) => ev => {
-      ev.preventDefault();
-      this.props.onSubmit(username, email, password);
-    }
+    dispatch(register(payload));
   }
+  const email = auth.email;
+  const password = auth.password;
+  const username = auth.username;
 
-  componentWillUnmount() {
-    this.props.onUnload();
-  }
-
-  render() {
-    const email = this.props.email;
-    const password = this.props.password;
-    const username = this.props.username;
+  // componentWillUnmount() {
+  //   dispatch(registerPageUnloaded());
+  // }
+  // render() {
 
     return (
       <div className="auth-page">
@@ -60,9 +60,9 @@ class Register extends React.Component {
                 </Link>
               </p>
 
-              <ListErrors errors={this.props.errors} />
+              <ListErrors errors={auth.errors} />
 
-              <form onSubmit={this.submitForm(username, email, password)}>
+              <form onSubmit={() => submitForm(username, email, password)}>
                 <fieldset>
 
                   <fieldset className="form-group">
@@ -70,8 +70,8 @@ class Register extends React.Component {
                       className="form-control form-control-lg"
                       type="text"
                       placeholder="Username"
-                      value={this.props.username}
-                      onChange={this.changeUsername} />
+                      value={auth.username}
+                      onChange={changeUsername} />
                   </fieldset>
 
                   <fieldset className="form-group">
@@ -79,8 +79,8 @@ class Register extends React.Component {
                       className="form-control form-control-lg"
                       type="email"
                       placeholder="Email"
-                      value={this.props.email}
-                      onChange={this.changeEmail} />
+                      value={auth.email}
+                      onChange={changeEmail} />
                   </fieldset>
 
                   <fieldset className="form-group">
@@ -88,14 +88,14 @@ class Register extends React.Component {
                       className="form-control form-control-lg"
                       type="password"
                       placeholder="Password"
-                      value={this.props.password}
-                      onChange={this.changePassword} />
+                      value={auth.password}
+                      onChange={changePassword} />
                   </fieldset>
 
                   <button
                     className="btn btn-lg btn-primary pull-xs-right"
                     type="submit"
-                    disabled={this.props.inProgress}>
+                    disabled={auth.inProgress}>
                     Sign up
                   </button>
 
@@ -107,7 +107,6 @@ class Register extends React.Component {
         </div>
       </div>
     );
-  }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Register);
+// export default connect(mapStateToProps, mapDispatchToProps)(Register);

@@ -1,24 +1,51 @@
-import {
-  PROFILE_PAGE_LOADED,
-  PROFILE_PAGE_UNLOADED,
-  FOLLOW_USER,
-  UNFOLLOW_USER
-} from '../constants/actionTypes';
+import { createSlice } from '@reduxjs/toolkit'
 
-export default (state = {}, action) => {
-  switch (action.type) {
-    case PROFILE_PAGE_LOADED:
+const profile = createSlice({
+  name: 'profile',
+  initialState: [],
+  reducers: {
+    profilePageLoaded(action){
       return {
         ...action.payload[0].profile
       };
-    case PROFILE_PAGE_UNLOADED:
+    },
+    profilePageUnloaded(){
       return {};
-    case FOLLOW_USER:
-    case UNFOLLOW_USER:
+    },
+    followUser(){},
+    unfollowUser(action){
       return {
         ...action.payload.profile
       };
-    default:
-      return state;
+    }
   }
-};
+})
+
+export const {profilePageLoaded, profilePageUnloaded, followUser, unfollowUser} = profile.actions;
+export default profile.reducer;
+
+
+// import {
+//   PROFILE_PAGE_LOADED,
+//   PROFILE_PAGE_UNLOADED,
+//   FOLLOW_USER,
+//   UNFOLLOW_USER
+// } from '../constants/actionTypes';
+
+// export default (state = {}, action) => {
+//   switch (action.type) {
+//     case PROFILE_PAGE_LOADED:
+//       return {
+//         ...action.payload[0].profile
+//       };
+//     case PROFILE_PAGE_UNLOADED:
+//       return {};
+//     case FOLLOW_USER:
+//     case UNFOLLOW_USER:
+//       return {
+//         ...action.payload.profile
+//       };
+//     default:
+//       return state;
+//   }
+// };

@@ -3,49 +3,59 @@ import MainView from './MainView';
 import React from 'react';
 import Tags from './Tags';
 import agent from '../../agent';
-import { connect } from 'react-redux';
+import { connect, useDispatch, useSelector } from 'react-redux';
 import {
   HOME_PAGE_LOADED,
   HOME_PAGE_UNLOADED,
   APPLY_TAG_FILTER
 } from '../../constants/actionTypes';
+import { applyTagFilter, homePageLoaded } from '../../reducers/articleList';
+import { homePageUnloaded } from '../../reducers/home';
 
 const Promise = global.Promise;
 
-const mapStateToProps = state => ({
+// const mapStateToProps = state => ({
+//   ...state.home,
+//   appName: state.common.appName,
+//   token: state.common.token
+// });
+
+// const mapDispatchToProps = dispatch => ({
+//   onClickTag: (tag, pager, payload) =>
+//     dispatch({ type: APPLY_TAG_FILTER, tag, pager, payload }),
+//   onLoad: (tab, pager, payload) =>
+//     dispatch({ type: HOME_PAGE_LOADED, tab, pager, payload }),
+//   onUnload: () =>
+//     dispatch({  type: HOME_PAGE_UNLOADED })
+// });
+
+const home = useSelector((state) => ({
   ...state.home,
   appName: state.common.appName,
   token: state.common.token
-});
+}))
 
-const mapDispatchToProps = dispatch => ({
-  onClickTag: (tag, pager, payload) =>
-    dispatch({ type: APPLY_TAG_FILTER, tag, pager, payload }),
-  onLoad: (tab, pager, payload) =>
-    dispatch({ type: HOME_PAGE_LOADED, tab, pager, payload }),
-  onUnload: () =>
-    dispatch({  type: HOME_PAGE_UNLOADED })
-});
+const dispatch = useDispatch();
 
 class Home extends React.Component {
   componentWillMount() {
-    const tab = this.props.token ? 'feed' : 'all';
-    const articlesPromise = this.props.token ?
+    const tab = home.token ? 'feed' : 'all';
+    const articlesPromise = home.token ?
       agent.Articles.feed :
       agent.Articles.all;
 
-    this.props.onLoad(tab, articlesPromise, Promise.all([agent.Tags.getAll(), articlesPromise()]));
+    dispatch(homePageLoaded(tab, articlesPromise, Promise.all([agent.Tags.getAll(), articlesPromise()])));
   }
 
   componentWillUnmount() {
-    this.props.onUnload();
+    dispatch(homePageUnloaded());
   }
 
   render() {
     return (
       <div className="home-page">
 
-        <Banner token={this.props.token} appName={this.props.appName} />
+        <Banner token={home.token} appName={home.appName} />
 
         <div className="container page">
           <div className="row">
@@ -57,9 +67,8 @@ class Home extends React.Component {
                 <p>Popular Tags</p>
 
                 <Tags
-                  tags={this.props.tags}
-                  onClickTag={this.props.onClickTag} />
-
+                  tags={home.tags}
+                  onClickTag={dispatch(applyTagFilter())} />
               </div>
             </div>
           </div>
@@ -70,4 +79,5 @@ class Home extends React.Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Home);
+// export default connect(mapStateToProps, mapDispatchToProps)(Home);
+export default Home;

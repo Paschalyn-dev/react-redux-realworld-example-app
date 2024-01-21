@@ -1,49 +1,48 @@
-import React from 'react';
+import React, { useState } from 'react';
 import agent from '../../agent';
-import { connect } from 'react-redux';
-import { ADD_COMMENT } from '../../constants/actionTypes';
+import { connect, useDispatch } from 'react-redux';
+// import { ADD_COMMENT } from '../../constants/actionTypes';
+import { addComment } from '../../reducers/article';
 
-const mapDispatchToProps = dispatch => ({
-  onSubmit: payload =>
-    dispatch({ type: ADD_COMMENT, payload })
-});
+// const mapDispatchToProps = dispatch => ({
+//   onSubmit: payload =>
+//     dispatch({ type: ADD_COMMENT, payload })
+// });
 
-class CommentInput extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      body: ''
-    };
+export default function CommentInput(props) {
+  // this.state = {
+    //   body: ''
+    // };
+    const dispatch = useDispatch();
+    const [body, setBody] = useState((ev) => {body: ev.target.value})
 
-    this.setBody = ev => {
-      this.setState({ body: ev.target.value });
-    };
+    // this.setBody = ev => {
+    //   this.setState({ body: ev.target.value });
+    // };
 
-    this.createComment = ev => {
+    function createComment (ev) {
       ev.preventDefault();
       const payload = agent.Comments.create(this.props.slug,
-        { body: this.state.body });
-      this.setState({ body: '' });
-      this.props.onSubmit(payload);
+        { body: body });
+      setBody({ body: '' });
+      dispatch(addComment(payload));
     };
-  }
 
-  render() {
     return (
-      <form className="card comment-form" onSubmit={this.createComment}>
+      <form className="card comment-form" onSubmit={createComment}>
         <div className="card-block">
           <textarea className="form-control"
             placeholder="Write a comment..."
-            value={this.state.body}
-            onChange={this.setBody}
+            value={body}
+            onChange={setBody}
             rows="3">
           </textarea>
         </div>
         <div className="card-footer">
           <img
-            src={this.props.currentUser.image}
+            src={props.currentUser.image}
             className="comment-author-img"
-            alt={this.props.currentUser.username} />
+            alt={props.currentUser.username} />
           <button
             className="btn btn-sm btn-primary"
             type="submit">
@@ -52,7 +51,6 @@ class CommentInput extends React.Component {
         </div>
       </form>
     );
-  }
 }
 
-export default connect(() => ({}), mapDispatchToProps)(CommentInput);
+// export default connect(() => ({}), mapDispatchToProps)(CommentInput);
