@@ -2,7 +2,6 @@ import logo from './logo.svg';
 import agent from './agent';
 import { push } from 'react-router-redux';
 import './App.css';
-import { decrement, increaseByNumber, increment } from './redux-toolkit/reducers/counterSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { appLoad, redirect} from "./redux-toolkit/reducers/common"
 import { Route, Router, Routes } from 'react-router';
@@ -27,13 +26,13 @@ function App() {
     redirectTo: state.common.redirectTo
   }))
   const dispatch = useDispatch();
-  // useEffect(() => {
-  //   if (common.redirectTo) {
-  //     // this.context.router.replace(common.redirectTo);
-  //     store.dispatch(push(common.redirectTo));
-  //     dispatch(redirect());
-  //   }
-  // },[common]);
+  useEffect(() => {
+    if (common.redirectTo) {
+      // this.context.router.replace(common.redirectTo);
+      store.dispatch(push(common.redirectTo));
+      dispatch(redirect());
+    }
+  },[common]);
 
   useEffect(() => {
     const token = window.localStorage.getItem('jwt');
@@ -50,7 +49,7 @@ function App() {
       <h1>gfghcddrsressresese</h1>
       <Router>
         <Routes>
-          {/* <Route exact path="/" element={Home}/> */}
+          <Route exact path="/" element={Home}/>
           <Route path="/login" element={Login} />
           <Route path="/register" element={Register} />
           <Route path="/editor/:slug" element={Editor} />
