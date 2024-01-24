@@ -1,10 +1,11 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link} from "react-router-dom";
+
 
 const LoggedOutView = props => {
   if (!props.currentUser) {
     return (
-      <ul className="nav navbar-nav pull-xs-right">
+        <ul className="nav navbar-nav pull-xs-right">
 
         <li className="nav-item">
           <Link to="/" className="nav-link">
@@ -23,7 +24,6 @@ const LoggedOutView = props => {
             Sign up
           </Link>
         </li>
-
       </ul>
     );
   }

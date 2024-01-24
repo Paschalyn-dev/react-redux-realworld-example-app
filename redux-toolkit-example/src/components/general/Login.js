@@ -20,8 +20,8 @@ function Login() {
         return () => dispatch(loginPageUnloaded())
     },[])
 
-    const email = auth.props.email;
-    const password = auth.props.password;
+    const email = auth.email;
+    const password = auth.password;
     return (
       <div className="auth-page">
         <div className="container page">
@@ -57,7 +57,6 @@ function Login() {
                       value={password}
                       onChange={changePassword} />
                   </fieldset>
-
                   <button
                     className="btn btn-lg btn-primary pull-xs-right"
                     type="submit"

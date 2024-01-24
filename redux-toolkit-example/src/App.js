@@ -4,7 +4,7 @@ import { push } from 'react-router-redux';
 import './App.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { appLoad, redirect} from "./redux-toolkit/reducers/common"
-import { Route, Router, Routes } from 'react-router';
+import { Route, Router, Routes, Switch, withRouter } from 'react-router-dom';
 import Home from './components/home/index';
 import Login from './components/general/Login';
 import Register from './components/general/Register';
@@ -14,7 +14,7 @@ import Settings from './components/general/Settings';
 import ProfileFavorites from './components/general/ProfileFavourite';
 import { Profile } from './components/general/Profile';
 import { useEffect } from 'react';
-import { store } from "../src/redux-toolkit/store"
+import { history, store } from "../src/redux-toolkit/store"
 import Header from '../src/components/general/Header';
 
 
@@ -34,41 +34,46 @@ function App() {
     }
   },[common]);
 
-  useEffect(() => {
-    const token = window.localStorage.getItem('jwt');
-    if (token) {
-      agent.setToken(token);
-    }
+  // useEffect(() => {
+  //   const token = window.localStorage.getItem('jwt');
+  //   if (token) {
+  //     agent.setToken(token);
+  //   }
 
-    dispatch(appLoad(token ? agent.Auth.current() : null, token));
-  },[])
+  //   dispatch(appLoad(token ? agent.Auth.current() : null, token));
+  // },[])
 
   if (common.appLoaded) {
   return (
     <div className="App">
-      <h1>gfghcddrsressresese</h1>
-      <Router>
-        <Routes>
-          <Route exact path="/" element={Home}/>
-          <Route path="/login" element={Login} />
-          <Route path="/register" element={Register} />
-          <Route path="/editor/:slug" element={Editor} />
-          <Route path="/editor" element={Editor} />
-          <Route path="/article/:id" element={Article} />
-          <Route path="/settings" element={Settings} />
-          <Route path="/@:username/favorites" element={ProfileFavorites} />
-          <Route path="/@:username" element={Profile} />
-        </Routes>
+      <Router history={history}>
+        <Switch>
+          <Route path="/login" component={Login} />
+          <Route path="/register" component={Register} />
+          <Route path="/editor/:slug" component={Editor} />
+          <Route path="/editor" component={Editor} />
+          <Route path="/article/:id" component={Article} />
+          <Route path="/settings" component={Settings} />
+          <Route path="/@:username/favorites" component={ProfileFavorites} />
+          <Route path="/@:username" component={Profile} />
+          <Route path="/" component={Home}/>
+        </Switch>
       </Router>
     </div>
   );
 };
 return (
-  <div>
-    <Header
-      appName={common.appName}
-      currentUser={common.currentUser} />
-  </div>
+  <Router history={history}>
+    <div>
+      <Header
+        appName={common.appName}
+        currentUser={common.currentUser} />
+        <Switch>
+          <Route path="/login" component={Login} />
+          <Route path="/register" component={Register} />
+        </Switch>
+    </div>
+  </Router>
 );
 }
 
