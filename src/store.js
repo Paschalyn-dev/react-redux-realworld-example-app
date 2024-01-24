@@ -1,7 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { applyMiddleware, createStore } from 'redux';
 import { createLogger } from 'redux-logger'
-import { promiseMiddleware, localStorageMiddleware } from './middleware';
+import { promiseMiddleware, localStorageMiddleware } from '../redux-toolkit-example/src/middleware';
 import { composeWithDevTools } from 'redux-devtools-extension/developmentOnly';
 // import reducer from './reducer';
 import articleReducer from './reducers/article';

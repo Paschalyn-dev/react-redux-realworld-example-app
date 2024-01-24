@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import agent from '../agent';
+import agent from '../../redux-toolkit-example/agent';
 import { connect, useDispatch, useSelector } from 'react-redux';
 // import { ARTICLE_FAVORITED, ARTICLE_UNFAVORITED } from '../constants/actionTypes';
 import { articleFavorited } from '../reducers/articleList';

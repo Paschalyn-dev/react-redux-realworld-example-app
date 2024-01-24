@@ -3,6 +3,9 @@
     "version": "0.1.0",
     "private": true,
     "devDependencies": {
+        "@types/react": "^18.2.48",
+        "@types/react-dom": "^18.2.18",
+        "@types/react-router-dom": "^5.3.3",
         "cross-env": "^5.1.4",
         "react-scripts": "1.1.1",
         "webpack": "^3.8.1"

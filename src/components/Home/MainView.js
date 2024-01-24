@@ -1,6 +1,6 @@
 import ArticleList from '../ArticleList';
 import React, { useDeferredValue } from 'react';
-import agent from '../../agent';
+import agent from '../../../redux-toolkit-example/agent';
 import { connect, useDispatch, useSelector } from 'react-redux';
 // import { CHANGE_TAB } from '../../constants/actionTypes';
 import { changeTab } from '../../reducers/articleList';

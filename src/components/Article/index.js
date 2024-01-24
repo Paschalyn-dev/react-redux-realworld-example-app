@@ -1,7 +1,7 @@
 import ArticleMeta from './ArticleMeta';
 import CommentContainer from './CommentContainer';
 import React, { useEffect } from 'react';
-import agent from '../../agent';
+import agent from '../../../redux-toolkit-example/agent';
 import { connect, useDispatch, useSelector } from 'react-redux';
 import marked from 'marked';
 import { ARTICLE_PAGE_LOADED, ARTICLE_PAGE_UNLOADED } from '../../constants/actionTypes';

@@ -1,5 +1,5 @@
 import React from 'react';
-import agent from '../agent';
+import agent from '../../redux-toolkit-example/agent';
 // import { connect } from 'react-redux';
 // import { SET_PAGE } from '../constants/actionTypes';
 import { useDispatch } from 'react-redux';

@@ -1,7 +1,7 @@
 import { Profile, mapStateToProps } from './Profile';
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import agent from '../agent';
+import agent from '../../redux-toolkit-example/agent';
 import { connect, useDispatch, useSelector } from 'react-redux';
 // import {
 //   PROFILE_PAGE_LOADED,

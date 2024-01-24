@@ -1,5 +1,5 @@
 import React from 'react';
-import agent from '../../agent';
+import agent from '../../../redux-toolkit-example/agent';
 import { connect, useDispatch } from 'react-redux';
 // import { DELETE_COMMENT } from '../../constants/actionTypes';
 import { deleteComment } from '../../reducers/article';

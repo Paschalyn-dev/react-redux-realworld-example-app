@@ -1,13 +1,6 @@
 import agent from './agent';
-import {
-  ASYNC_START,
-  ASYNC_END,
-  LOGIN,
-  LOGOUT,
-  REGISTER
-} from './constants/actionTypes';
-import { asyncEnd, asyncStart, login, register } from './reducers/auth';
-import { logout } from './reducers/common';
+import { asyncEnd, asyncStart, login, register } from '../src/redux-toolkit/reducers/auth';
+import { logout } from '../src/redux-toolkit/reducers/common';
 
 const promiseMiddleware = store => next => action => {
   if (isPromise(action.payload)) {
